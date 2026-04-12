@@ -25,6 +25,7 @@ from app.screens.notifications import NotificationsScreen
 from app.screens.settings import SettingsScreen
 from app.state.app_state import AppState
 from app.storage.cache_store import CacheStore
+from app.storage.local_db import LocalDatabase
 from app.storage.secure_store import SecureTokenStore
 from app.widgets.course_widgets import CourseListItem
 
@@ -42,7 +43,8 @@ class HRLMSApp(MDApp):
         super().__init__(**kwargs)
         self.state = AppState()
         self.api = APIClient()
-        self.auth_service = AuthService(self.api)
+        self.local_db = LocalDatabase()
+        self.auth_service = AuthService(self.api, self.local_db)
         self.course_service = CourseService(self.api)
         self.employee_service = EmployeeService(self.api)
         self.notification_service = NotificationService(self.api)
@@ -91,6 +93,7 @@ class HRLMSApp(MDApp):
 
     def _establish_session(self, token: str):
         self.api.set_token(token)
+        self.auth_service.set_active_token(token)
         self.token_store.save_token(token)
         self.state.set_token(token)
         user = self.auth_service.me()
@@ -111,6 +114,7 @@ class HRLMSApp(MDApp):
         except APIError:
             self.state.set_token(token)
             self.api.set_token(token)
+            self.auth_service.set_active_token(token)
             cached = self.cache_store.get("profile")
             if cached:
                 self.state.set_user(User.model_validate(cached))
@@ -121,6 +125,7 @@ class HRLMSApp(MDApp):
         self.state.set_token(None)
         self.state.set_user(None)
         self.api.set_token(None)
+        self.auth_service.set_active_token(None)
         self.go("login")
 
     def route_by_role(self):

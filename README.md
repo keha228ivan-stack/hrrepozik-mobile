@@ -24,11 +24,16 @@ Base URL and timeout are configurable via env vars:
 - `HRLMS_API_BASE_URL`
 - `HRLMS_API_TIMEOUT`
 - `HRLMS_ENV`
+- `HRLMS_TRUST_ENV` (set `0` to ignore system proxy variables)
+
+If `HRLMS_API_BASE_URL` is left as default (`https://api.example.com`), auth works in local offline mode using SQLite.
 
 ## Offline and sync
 
 - Course/profile caches are written to `offline_cache.json`.
 - Failed progress updates are queued in `sync_queue` and replayed from Settings.
+- Local SQLite database `hr_lms_mobile.db` stores users and sync-ready entities (`users`, `courses`, `notifications`, `sync_actions`).
+- The schema includes `external_id` fields to map records with site/desktop backend IDs during future bidirectional sync.
 
 ## Notifications
 

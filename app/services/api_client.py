@@ -19,7 +19,15 @@ class APIClient:
     def __init__(self) -> None:
         self._log = get_logger("api")
         self._token: str | None = None
-        self._client = httpx.Client(base_url=settings.api_base_url, timeout=settings.api_timeout_sec)
+        self._client = httpx.Client(
+            base_url=settings.api_base_url,
+            timeout=settings.api_timeout_sec,
+            trust_env=settings.trust_env,
+        )
+
+    @property
+    def is_configured(self) -> bool:
+        return bool(settings.api_base_url) and "api.example.com" not in settings.api_base_url
 
     def set_token(self, token: str | None) -> None:
         self._token = token
@@ -31,6 +39,8 @@ class APIClient:
         return headers
 
     def request(self, method: str, path: str, *, json: dict | None = None, retry: int = 1) -> Any:
+        if not self.is_configured:
+            raise APIError("API base URL is not configured. Set HRLMS_API_BASE_URL.")
         last_exc: Exception | None = None
         for _ in range(retry + 1):
             try:
@@ -43,7 +53,7 @@ class APIClient:
                     return None
                 return resp.json()
             except httpx.RequestError as exc:
-                self._log.exception("Network error while calling %s %s", method, path)
+                self._log.warning("Network error while calling %s %s: %s", method, path, exc)
                 last_exc = exc
             except ValueError as exc:
                 raise APIError("Invalid JSON response") from exc

@@ -34,8 +34,15 @@ Builder.load_string(KV)
 
 
 class RegisterScreen(BaseScreen):
+    _submitting = False
+
     def on_register(self) -> None:
+        if self._submitting:
+            return
+        self._submitting = True
         try:
             self.app.handle_register(self.ids.name.text.strip(), self.ids.email.text.strip(), self.ids.password.text)
         except APIError as exc:
             toast(f"Registration failed: {exc}")
+        finally:
+            self._submitting = False

@@ -34,10 +34,17 @@ Builder.load_string(KV)
 
 
 class LoginScreen(BaseScreen):
+    _submitting = False
+
     def on_login(self) -> None:
+        if self._submitting:
+            return
+        self._submitting = True
         email = self.ids.email.text.strip()
         password = self.ids.password.text
         try:
             self.app.handle_login(email, password)
         except APIError as exc:
             toast(f"Login failed: {exc}")
+        finally:
+            self._submitting = False
