@@ -1,10 +1,11 @@
 from kivy.lang import Builder
-from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+from kivymd.toast import toast
 
 from app.screens.base import BaseScreen
 from app.services.api_client import APIError
 
 KV = '''
+#:import dp kivy.metrics.dp
 <RegisterScreen>:
     name: "register"
     MDBoxLayout:
@@ -37,4 +38,4 @@ class RegisterScreen(BaseScreen):
         try:
             self.app.handle_register(self.ids.name.text.strip(), self.ids.email.text.strip(), self.ids.password.text)
         except APIError as exc:
-            MDSnackbar(MDSnackbarText(text=f"Registration failed: {exc}")).open()
+            toast(f"Registration failed: {exc}")

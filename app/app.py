@@ -71,10 +71,14 @@ class HRLMSApp(MDApp):
             SettingsScreen(self),
         ]:
             sm.add_widget(screen)
-        self.restore_session()
         return sm
 
+    def on_start(self):
+        self.restore_session()
+
     def go(self, screen_name: str):
+        if not self.root:
+            return
         self.root.current = screen_name
 
     def handle_login(self, email: str, password: str):

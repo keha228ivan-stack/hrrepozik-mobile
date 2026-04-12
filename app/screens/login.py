@@ -1,10 +1,11 @@
 from kivy.lang import Builder
-from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+from kivymd.toast import toast
 
 from app.screens.base import BaseScreen
 from app.services.api_client import APIError
 
 KV = '''
+#:import dp kivy.metrics.dp
 <LoginScreen>:
     name: "login"
     MDBoxLayout:
@@ -39,4 +40,4 @@ class LoginScreen(BaseScreen):
         try:
             self.app.handle_login(email, password)
         except APIError as exc:
-            MDSnackbar(MDSnackbarText(text=f"Login failed: {exc}")).open()
+            toast(f"Login failed: {exc}")

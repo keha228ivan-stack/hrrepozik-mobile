@@ -3,6 +3,7 @@ from kivy.lang import Builder
 from app.screens.base import BaseScreen
 
 KV = '''
+#:import dp kivy.metrics.dp
 <ManagerDashboardScreen>:
     name: "manager_dashboard"
     MDBoxLayout:
