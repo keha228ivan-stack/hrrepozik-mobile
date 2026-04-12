@@ -29,6 +29,8 @@ Base URL and timeout are configurable via env vars:
 
 - Course/profile caches are written to `offline_cache.json`.
 - Failed progress updates are queued in `sync_queue` and replayed from Settings.
+- Local SQLite database `hr_lms_mobile.db` stores users and sync-ready entities (`users`, `courses`, `notifications`, `sync_actions`).
+- The schema includes `external_id` fields to map records with site/desktop backend IDs during future bidirectional sync.
 
 ## Notifications
 
