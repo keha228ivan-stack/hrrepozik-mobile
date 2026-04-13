@@ -133,3 +133,17 @@ class LocalDatabase:
             avatar_url=row["avatar_url"],
             department=row["department"],
         )
+
+    def update_user(self, user_id: int, payload: dict) -> User | None:
+        fields: list[str] = []
+        values: list[str] = []
+        for key in ("name", "avatar_url", "department"):
+            if key in payload:
+                fields.append(f"{key} = ?")
+                values.append(payload[key])
+        if not fields:
+            return self.get_user_by_id(user_id)
+        values.append(user_id)
+        with self._connect() as conn:
+            conn.execute(f"UPDATE users SET {', '.join(fields)} WHERE id = ?", tuple(values))
+        return self.get_user_by_id(user_id)

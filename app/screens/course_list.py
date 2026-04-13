@@ -13,6 +13,10 @@ KV = '''
             id: query
             hint_text: "Search"
             on_text_validate: root.apply_filter()
+        MDTextField:
+            id: status
+            hint_text: "Status filter (active/completed/overdue)"
+            on_text_validate: root.apply_filter()
         ScrollView:
             MDList:
                 id: list
@@ -26,7 +30,10 @@ class CourseListScreen(BaseScreen):
 
     def apply_filter(self):
         q = self.ids.query.text.lower().strip()
+        status = self.ids.status.text.lower().strip()
         filtered = [c for c in self.app.state.courses if q in c.title.lower()]
+        if status:
+            filtered = [c for c in filtered if c.status.lower() == status]
         self.render(filtered)
 
     def render(self, courses):

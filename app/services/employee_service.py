@@ -15,3 +15,9 @@ class EmployeeService:
 
     def assign_course(self, user_id: int, course_id: int) -> None:
         self.api.request("POST", "/api/manager/assignments", json={"user_id": user_id, "course_id": course_id})
+
+    def add_employee(self, payload: dict) -> dict:
+        return self.api.request("POST", "/api/manager/employees", json=payload)
+
+    def analytics(self) -> dict:
+        return self.api.request("GET", "/api/manager/reports/analytics")

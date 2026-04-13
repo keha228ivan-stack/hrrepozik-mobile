@@ -10,6 +10,12 @@ KV = '''
         orientation: "vertical"
         MDTopAppBar:
             title: "Employees"
+        MDTextField:
+            id: new_employee_email
+            hint_text: "New employee email"
+        MDRaisedButton:
+            text: "Add employee"
+            on_release: root.add_employee()
         ScrollView:
             MDList:
                 id: employee_list
@@ -25,3 +31,10 @@ class EmployeeListScreen(BaseScreen):
             item = OneLineAvatarIconListItem(text=f"{emp.name} ({emp.avg_progress}%)")
             item.bind(on_release=lambda _, uid=emp.user_id: self.app.open_employee(uid))
             self.ids.employee_list.add_widget(item)
+
+    def add_employee(self):
+        email = self.ids.new_employee_email.text.strip()
+        if not email:
+            return
+        self.app.add_employee(email)
+        self.on_pre_enter()

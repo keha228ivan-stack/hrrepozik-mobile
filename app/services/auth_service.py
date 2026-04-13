@@ -65,3 +65,16 @@ class AuthService:
         data = self.api.request("GET", "/api/auth/me")
         user = User.model_validate(data)
         return user
+
+    def check_session(self) -> User:
+        return self.me()
+
+    def update_profile(self, payload: dict) -> User:
+        if self._active_token and self._active_token.startswith("local:"):
+            user_id = int(self._active_token.split(":", 1)[1])
+            user = self.local_db.update_user(user_id, payload)
+            if not user:
+                raise APIError("User not found")
+            return user
+        data = self.api.request("PATCH", "/api/auth/profile", json=payload)
+        return User.model_validate(data)

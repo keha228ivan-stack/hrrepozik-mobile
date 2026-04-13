@@ -12,6 +12,12 @@ Production-oriented mobile client scaffold for an existing HR+LMS backend.
 - `app/state/`: centralized application state store.
 - `app/utils/`: logging and helper utilities.
 
+Implemented modules:
+- Authorization / account / session / profile edit
+- Employee dashboard, courses, search+filters, progress+results, notifications, microtasks+surveys, achievements+certificates
+- Manager dashboard, employees, course assignment, analytics reports
+- Offline cache, offline content storage, deferred sync queue, realtime refresh polling
+
 ## API integration placeholders
 
 Update endpoints and payload adapters in:

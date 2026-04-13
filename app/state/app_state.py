@@ -12,6 +12,9 @@ class AppState:
     user: User | None = None
     courses: list[Course] = field(default_factory=list)
     notifications: list[AppNotification] = field(default_factory=list)
+    test_results: list[dict] = field(default_factory=list)
+    assignment_results: list[dict] = field(default_factory=list)
+    achievements: dict = field(default_factory=dict)
     loading: bool = False
     _subscribers: list[Callable[[], None]] = field(default_factory=list)
 
@@ -29,6 +32,12 @@ class AppState:
 
     def set_notifications(self, notifications: list[AppNotification]) -> None:
         self.notifications = notifications
+        self.emit()
+
+    def set_learning(self, *, tests: list[dict], assignments: list[dict], achievements: dict) -> None:
+        self.test_results = tests
+        self.assignment_results = assignments
+        self.achievements = achievements
         self.emit()
 
     def subscribe(self, callback: Callable[[], None]) -> None:
