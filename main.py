@@ -1,15 +1,26 @@
 import sys
 
+
+def _exit_with_message(message: str) -> None:
+    print(message)
+    raise SystemExit(1)
+
+
+if sys.version_info >= (3, 14):
+    _exit_with_message(
+        "Python 3.14+ пока не поддерживается для этого приложения (Kivy wheel недоступен).\n"
+        "Используй Python 3.10–3.13, затем: pip install -r requirements.txt"
+    )
+
+
 try:
     _ensure_supported_python()
     from app.app import HRLMSApp
 except ModuleNotFoundError as exc:
     missing = exc.name or "dependency"
-    print(f"Missing dependency: {missing}. Install requirements with: pip install -r requirements.txt")
-    if missing in {"kivy", "kivymd"} and sys.version_info >= (3, 14):
-        print("Python 3.14 detected: this project uses nightly Kivy/KivyMD from GitHub for 3.14.")
-        print("Please run: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt")
-    raise
+    _exit_with_message(
+        f"Missing dependency: {missing}. Install requirements with: pip install -r requirements.txt"
+    )
 
 
 if __name__ == "__main__":

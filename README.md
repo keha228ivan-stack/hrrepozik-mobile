@@ -48,9 +48,19 @@ If `HRLMS_API_BASE_URL` is left as default (`https://api.example.com`), auth wor
 
 ## Run
 
-Python: **3.10–3.13** (stable). Python **3.14** is supported via nightly `kivy`/`kivymd` installs from GitHub defined in `requirements.txt`.
+Python: **3.10–3.13**. Python **3.14+** is not supported in this project because Kivy wheel build fails on typical Windows setup without native C/C++ toolchain.
 
 ```bash
 pip install -r requirements.txt
 python main.py
 ```
+
+Windows quick start:
+```powershell
+py -3.13 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python main.py
+```
+
