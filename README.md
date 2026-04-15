@@ -48,6 +48,8 @@ If `HRLMS_API_BASE_URL` is left as default (`https://api.example.com`), auth wor
 
 ## Run
 
+Python: **3.10–3.13** (stable). Python **3.14** is supported via nightly `kivy`/`kivymd` installs from GitHub defined in `requirements.txt`.
+
 ```bash
 pip install -r requirements.txt
 python main.py
