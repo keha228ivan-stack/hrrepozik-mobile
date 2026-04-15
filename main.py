@@ -1,6 +1,7 @@
 import sys
 
 try:
+    _ensure_supported_python()
     from app.app import HRLMSApp
 except ModuleNotFoundError as exc:
     missing = exc.name or "dependency"
