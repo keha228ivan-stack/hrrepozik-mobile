@@ -13,13 +13,15 @@ class AuthService:
         self._active_token = token
 
     @staticmethod
-    def _validate_registration(name: str, email: str, password: str) -> None:
+    def _validate_registration(name: str, email: str, password: str, role: str) -> None:
         if not name.strip():
             raise APIError("Name is required")
         if "@" not in email or "." not in email:
             raise APIError("Invalid email format")
         if len(password) < 6:
             raise APIError("Password must contain at least 6 characters")
+        if role not in {"employee", "manager"}:
+            raise APIError("Role must be employee or manager")
 
     def login(self, email: str, password: str) -> str:
         email = email.lower().strip()
@@ -39,10 +41,11 @@ class AuthService:
         self._active_token = token
         return token
 
-    def register(self, name: str, email: str, password: str) -> str:
+    def register(self, name: str, email: str, password: str, role: str = "employee") -> str:
         name = name.strip()
         email = email.lower().strip()
-        self._validate_registration(name, email, password)
+        role = role.strip().lower()
+        self._validate_registration(name, email, password, role)
         existing = self.local_db.get_user_by_email(email)
         if existing:
             raise APIError("User with this email already exists")
@@ -52,11 +55,11 @@ class AuthService:
             data = self.api.request(
                 "POST",
                 "/api/auth/register",
-                json={"name": name, "email": email, "password": password},
+                json={"name": name, "email": email, "password": password, "role": role},
             )
             token = data["access_token"]
         except APIError:
-            user = self.local_db.create_user(name=name, email=email, password=password, role="employee")
+            user = self.local_db.create_user(name=name, email=email, password=password, role=role)
             token = f"local:{user.id}"
         self._active_token = token
         return token

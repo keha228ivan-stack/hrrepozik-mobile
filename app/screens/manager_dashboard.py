@@ -46,7 +46,7 @@ KV = '''
                 on_release: app.go("settings")
 
             MDRectangleFlatButton:
-                text: "Менеджер"
+                text: "💼 Менеджер"
                 size_hint: None, None
                 size: dp(160), dp(52)
                 line_color: get_color_from_hex("#CBD5E1")

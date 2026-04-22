@@ -46,6 +46,14 @@ KV = '''
                 icon_color: get_color_from_hex("#64748B")
                 on_release: app.go("profile")
 
+            MDRectangleFlatButton:
+                text: "👤 Сотрудник"
+                size_hint: None, None
+                size: dp(170), dp(46)
+                line_color: get_color_from_hex("#CBD5E1")
+                text_color: get_color_from_hex("#0F172A")
+                on_release: app.go("profile")
+
         MDBoxLayout:
             MDBoxLayout:
                 orientation: "vertical"

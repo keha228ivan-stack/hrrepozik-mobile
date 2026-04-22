@@ -1,4 +1,5 @@
 from kivy.lang import Builder
+from kivy.properties import StringProperty
 from kivymd.toast import toast
 
 from app.screens.base import BaseScreen
@@ -24,7 +25,7 @@ KV = '''
             MDCard:
                 orientation: "vertical"
                 size_hint: None, None
-                size: dp(420), dp(520)
+                size: dp(420), dp(620)
                 padding: dp(24)
                 spacing: dp(12)
                 radius: [18, 18, 18, 18]
@@ -64,6 +65,30 @@ KV = '''
                     mode: "rectangle"
                     password: True
 
+                MDLabel:
+                    text: "Выбери тип аккаунта"
+                    theme_text_color: "Secondary"
+
+                MDBoxLayout:
+                    size_hint_y: None
+                    height: dp(44)
+                    spacing: dp(8)
+
+                    MDRaisedButton:
+                        text: "👤 Сотрудник"
+                        md_bg_color: get_color_from_hex("#2563EB") if root.selected_role == "employee" else get_color_from_hex("#94A3B8")
+                        on_release: root.select_role("employee")
+
+                    MDRaisedButton:
+                        text: "💼 Менеджер"
+                        md_bg_color: get_color_from_hex("#2563EB") if root.selected_role == "manager" else get_color_from_hex("#94A3B8")
+                        on_release: root.select_role("manager")
+
+                MDLabel:
+                    id: role_hint
+                    text: "Будет открыто меню сотрудника"
+                    theme_text_color: "Secondary"
+
                 MDRaisedButton:
                     text: "Зарегистрироваться"
                     on_release: root.on_register()
@@ -78,6 +103,14 @@ Builder.load_string(KV)
 
 class RegisterScreen(BaseScreen):
     _submitting = False
+    selected_role = StringProperty("employee")
+
+    def select_role(self, role: str) -> None:
+        self.selected_role = role
+        if role == "manager":
+            self.ids.role_hint.text = "Будет открыто меню менеджера с управлением командой"
+        else:
+            self.ids.role_hint.text = "Будет открыто меню сотрудника"
 
     def on_register(self) -> None:
         if self._submitting:
@@ -96,11 +129,13 @@ class RegisterScreen(BaseScreen):
 
         self._submitting = True
         try:
-            self.app.handle_register(name, email, password)
+            self.app.handle_register(name, email, password, self.selected_role)
             self.ids.name.text = ""
             self.ids.email.text = ""
             self.ids.password.text = ""
             self.ids.password_confirm.text = ""
+            self.selected_role = "employee"
+            self.ids.role_hint.text = "Будет открыто меню сотрудника"
             toast("Регистрация успешна")
         except APIError as exc:
             toast(f"Ошибка регистрации: {exc}")

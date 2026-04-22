@@ -102,8 +102,8 @@ class HRLMSApp(MDApp):
         token = self.auth_service.login(email, password)
         self._establish_session(token)
 
-    def handle_register(self, name: str, email: str, password: str):
-        token = self.auth_service.register(name, email, password)
+    def handle_register(self, name: str, email: str, password: str, role: str = "employee"):
+        token = self.auth_service.register(name, email, password, role)
         self._establish_session(token)
 
     def _establish_session(self, token: str):
