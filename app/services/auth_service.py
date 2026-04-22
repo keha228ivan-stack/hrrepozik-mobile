@@ -22,6 +22,10 @@ class AuthService:
             raise APIError("Password must contain at least 6 characters")
 
     def login(self, email: str, password: str) -> str:
+        email = email.lower().strip()
+        password = password.strip()
+        if not email or not password:
+            raise APIError("Email and password are required")
         try:
             if not self.api.is_configured:
                 raise APIError("offline-mode")
@@ -36,6 +40,8 @@ class AuthService:
         return token
 
     def register(self, name: str, email: str, password: str) -> str:
+        name = name.strip()
+        email = email.lower().strip()
         self._validate_registration(name, email, password)
         existing = self.local_db.get_user_by_email(email)
         if existing:

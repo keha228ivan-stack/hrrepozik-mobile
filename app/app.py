@@ -64,7 +64,10 @@ class HRLMSApp(MDApp):
         self.selected_employee: dict | None = None
 
     def build(self):
+        self.theme_cls.theme_style = "Light"
+        self.theme_cls.material_style = "M3"
         self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_hue = "600"
         sm = ScreenManager()
         for screen in [
             LoginScreen(self),
