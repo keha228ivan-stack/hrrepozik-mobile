@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from app.models.compat import BaseModel
 
 
 class EmployeeProgress(BaseModel):

@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel
+from app.models.compat import BaseModel
 
 
 class AppNotification(BaseModel):
