@@ -1,4 +1,4 @@
-from app.models.compat import BaseModel
+from pydantic import BaseModel
 
 
 class TestResult(BaseModel):

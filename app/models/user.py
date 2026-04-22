@@ -1,4 +1,4 @@
-from app.models.compat import BaseModel, Field
+from pydantic import BaseModel, Field
 
 
 class User(BaseModel):
