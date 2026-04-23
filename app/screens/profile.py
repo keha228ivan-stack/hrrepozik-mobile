@@ -33,32 +33,24 @@ KV = '''
                     spacing: dp(10)
                     adaptive_height: True
 
-                    MDBoxLayout:
+                    MDLabel:
+                        text: "Данные профиля"
+                        font_style: "H6"
+                        bold: True
                         adaptive_height: True
-                        spacing: dp(8)
-
-                        MDLabel:
-                            id: role_icon
-                            text: "👤"
-                            font_style: "H5"
-                            size_hint_x: None
-                            width: dp(36)
-
-                        MDLabel:
-                            id: role_header
-                            text: "Меню сотрудника"
-                            font_style: "H6"
-                            bold: True
 
                     MDLabel:
                         id: name
                         text: "Имя:"
+                        adaptive_height: True
                     MDLabel:
                         id: email
                         text: "Email:"
+                        adaptive_height: True
                     MDLabel:
                         id: role
                         text: "Роль:"
+                        adaptive_height: True
 
                 MDCard:
                     orientation: "vertical"
@@ -101,8 +93,6 @@ class ProfileScreen(BaseScreen):
         if not user:
             return
         role_ru = "Менеджер" if user.role == "manager" else "Сотрудник"
-        self.ids.role_icon.text = "💼" if user.role == "manager" else "👤"
-        self.ids.role_header.text = f"Меню: {role_ru}"
         self.ids.name.text = f"Имя: {user.name}"
         self.ids.name_input.text = user.name
         self.ids.email.text = f"Email: {user.email}"

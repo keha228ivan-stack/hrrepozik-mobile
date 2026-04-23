@@ -40,23 +40,9 @@ KV = '''
                 on_release: app.go("notifications")
 
             MDIconButton:
-                icon: "cog-outline"
+                icon: "account-outline"
                 theme_icon_color: "Custom"
                 icon_color: get_color_from_hex("#64748B")
-                on_release: app.go("settings")
-
-            MDIconButton:
-                icon: "logout"
-                theme_icon_color: "Custom"
-                icon_color: get_color_from_hex("#64748B")
-                on_release: app.logout()
-
-            MDRectangleFlatButton:
-                text: "💼 Менеджер"
-                size_hint: None, None
-                size: dp(160), dp(52)
-                line_color: get_color_from_hex("#CBD5E1")
-                text_color: get_color_from_hex("#0F172A")
                 on_release: app.go("profile")
 
         MDBoxLayout:
