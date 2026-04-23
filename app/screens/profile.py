@@ -14,7 +14,7 @@ KV = '''
         MDTopAppBar:
             title: "Профиль"
             left_action_items: [["arrow-left", lambda x: root.back_to_dashboard()]]
-            right_action_items: [["home-outline", lambda x: root.back_to_dashboard()]]
+            right_action_items: [["home-outline", lambda x: root.back_to_dashboard()], ["logout", lambda x: app.logout()]]
 
         ScrollView:
             do_scroll_x: False

@@ -4,11 +4,17 @@ from app.screens.base import BaseScreen
 
 KV = '''
 #:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <EmployeeDetailScreen>:
     name: "employee_detail"
     MDBoxLayout:
         orientation: "vertical"
+        md_bg_color: get_color_from_hex("#F4F7FB")
         padding: dp(12)
+        MDTopAppBar:
+            title: "Детали сотрудника"
+            left_action_items: [["arrow-left", lambda x: app.go("employees")]]
+            right_action_items: [["home-outline", lambda x: app.go("manager_dashboard")], ["logout", lambda x: app.logout()]]
         MDLabel:
             id: title
             text: "Employee"

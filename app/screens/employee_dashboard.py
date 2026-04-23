@@ -46,6 +46,12 @@ KV = '''
                 icon_color: get_color_from_hex("#64748B")
                 on_release: app.go("profile")
 
+            MDIconButton:
+                icon: "logout"
+                theme_icon_color: "Custom"
+                icon_color: get_color_from_hex("#64748B")
+                on_release: app.logout()
+
             MDRectangleFlatButton:
                 text: "👤 Сотрудник"
                 size_hint: None, None

@@ -4,17 +4,22 @@ from kivymd.uix.list import OneLineAvatarIconListItem
 from app.screens.base import BaseScreen
 
 KV = '''
+#:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <EmployeeListScreen>:
     name: "employees"
     MDBoxLayout:
         orientation: "vertical"
+        md_bg_color: get_color_from_hex("#F4F7FB")
         MDTopAppBar:
-            title: "Employees"
+            title: "Сотрудники"
+            left_action_items: [["arrow-left", lambda x: app.go("manager_dashboard")]]
+            right_action_items: [["home-outline", lambda x: app.go("manager_dashboard")], ["logout", lambda x: app.logout()]]
         MDTextField:
             id: new_employee_email
-            hint_text: "New employee email"
+            hint_text: "Email нового сотрудника"
         MDRaisedButton:
-            text: "Add employee"
+            text: "Добавить сотрудника"
             on_release: root.add_employee()
         ScrollView:
             MDList:
