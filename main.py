@@ -6,6 +6,14 @@ def _exit_with_message(message: str) -> None:
     raise SystemExit(1)
 
 
+def _ensure_supported_python() -> None:
+    if sys.version_info < (3, 10):
+        _exit_with_message(
+            "Требуется Python 3.10+ для запуска приложения. "
+            "Обнови интерпретатор и установи зависимости: pip install -r requirements.txt"
+        )
+
+
 if sys.version_info >= (3, 14):
     _exit_with_message(
         "Python 3.14+ пока не поддерживается для этого приложения (Kivy wheel недоступен).\n"
