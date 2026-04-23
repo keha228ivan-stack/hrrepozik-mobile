@@ -4,35 +4,62 @@ from app.screens.base import BaseScreen
 
 KV = '''
 #:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <CourseDetailScreen>:
     name: "course_detail"
     MDBoxLayout:
         orientation: "vertical"
-        padding: dp(12)
-        spacing: dp(8)
-        MDLabel:
-            id: title
-            text: "Course"
-            font_style: "H6"
-        MDLabel:
-            id: description
-            text: "Description"
-        MDLabel:
-            id: materials
-            text: "Materials: -"
-        MDProgressBar:
-            id: progress
-            value: 0
-            max: 100
-        MDRaisedButton:
-            text: "Mark +10%"
-            on_release: root.bump_progress()
-        MDTextField:
-            id: question
-            hint_text: "Ask question to instructor/team"
-        MDRaisedButton:
-            text: "Send question"
-            on_release: root.send_question()
+        md_bg_color: get_color_from_hex("#F4F7FB")
+        MDTopAppBar:
+            title: "Детали курса"
+            left_action_items: [["arrow-left", lambda x: app.go("course_list")]]
+            right_action_items: [["home-outline", lambda x: app.route_by_role()], ["logout", lambda x: app.logout()]]
+
+        ScrollView:
+            MDCard:
+                orientation: "vertical"
+                padding: dp(16)
+                spacing: dp(10)
+                radius: [16, 16, 16, 16]
+                elevation: 0
+                md_bg_color: [1, 1, 1, 1]
+                size_hint: .96, None
+                adaptive_height: True
+                pos_hint: {"center_x": .5}
+
+                MDLabel:
+                    id: title
+                    text: "Course"
+                    font_style: "H6"
+                    bold: True
+
+                MDLabel:
+                    id: description
+                    text: "Description"
+                    theme_text_color: "Secondary"
+
+                MDLabel:
+                    id: materials
+                    text: "Materials: -"
+                    theme_text_color: "Secondary"
+
+                MDProgressBar:
+                    id: progress
+                    value: 0
+                    max: 100
+
+                MDRaisedButton:
+                    text: "Отметить +10%"
+                    on_release: root.bump_progress()
+
+                MDTextField:
+                    id: question
+                    hint_text: "Задать вопрос по курсу"
+                    mode: "rectangle"
+
+                MDRaisedButton:
+                    text: "Отправить вопрос"
+                    on_release: root.send_question()
 '''
 Builder.load_string(KV)
 

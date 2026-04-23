@@ -13,6 +13,7 @@ KV = '''
         MDTopAppBar:
             title: "Reports & Analytics"
             left_action_items: [["arrow-left", lambda x: app.go("manager_dashboard")]]
+            right_action_items: [["home-outline", lambda x: app.go("manager_dashboard")], ["logout", lambda x: app.logout()]]
         MDLabel:
             id: analytics
             text: "Analytics"

@@ -64,7 +64,10 @@ class HRLMSApp(MDApp):
         self.selected_employee: dict | None = None
 
     def build(self):
+        self.theme_cls.theme_style = "Light"
+        self.theme_cls.material_style = "M3"
         self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_hue = "600"
         sm = ScreenManager()
         for screen in [
             LoginScreen(self),
@@ -99,8 +102,8 @@ class HRLMSApp(MDApp):
         token = self.auth_service.login(email, password)
         self._establish_session(token)
 
-    def handle_register(self, name: str, email: str, password: str):
-        token = self.auth_service.register(name, email, password)
+    def handle_register(self, name: str, email: str, password: str, role: str = "employee"):
+        token = self.auth_service.register(name, email, password, role)
         self._establish_session(token)
 
     def _establish_session(self, token: str):
