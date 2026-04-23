@@ -4,36 +4,85 @@ from app.screens.base import BaseScreen
 
 KV = '''
 #:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <ProfileScreen>:
     name: "profile"
     MDBoxLayout:
         orientation: "vertical"
-        padding: dp(16)
-        spacing: dp(8)
+        md_bg_color: get_color_from_hex("#F4F7FB")
+
         MDTopAppBar:
-            title: "Profile"
+            title: "Профиль"
             left_action_items: [["arrow-left", lambda x: root.back_to_dashboard()]]
-        MDLabel:
-            id: name
-            text: "Name:"
-        MDTextField:
-            id: name_input
-            hint_text: "Edit name"
-        MDLabel:
-            id: email
-            text: "Email:"
-        MDLabel:
-            id: role
-            text: "Role:"
-        MDTextField:
-            id: department_input
-            hint_text: "Department"
-        MDRaisedButton:
-            text: "Save profile"
-            on_release: root.save_profile()
-        MDRaisedButton:
-            text: "Logout"
-            on_release: app.logout()
+            right_action_items: [["home-outline", lambda x: root.back_to_dashboard()], ["logout", lambda x: app.logout()]]
+
+        ScrollView:
+            do_scroll_x: False
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                padding: dp(24)
+                spacing: dp(16)
+
+                MDCard:
+                    orientation: "vertical"
+                    radius: [18, 18, 18, 18]
+                    elevation: 0
+                    md_bg_color: [1, 1, 1, 1]
+                    padding: dp(18)
+                    spacing: dp(10)
+                    adaptive_height: True
+
+                    MDLabel:
+                        text: "Данные профиля"
+                        font_style: "H6"
+                        bold: True
+                        adaptive_height: True
+
+                    MDLabel:
+                        id: name
+                        text: "Имя:"
+                        adaptive_height: True
+                    MDLabel:
+                        id: email
+                        text: "Email:"
+                        adaptive_height: True
+                    MDLabel:
+                        id: role
+                        text: "Роль:"
+                        adaptive_height: True
+
+                MDCard:
+                    orientation: "vertical"
+                    radius: [18, 18, 18, 18]
+                    elevation: 0
+                    md_bg_color: [1, 1, 1, 1]
+                    padding: dp(18)
+                    spacing: dp(12)
+                    adaptive_height: True
+
+                    MDLabel:
+                        text: "Редактирование"
+                        font_style: "H6"
+                        bold: True
+
+                    MDTextField:
+                        id: name_input
+                        hint_text: "Имя"
+                        mode: "rectangle"
+
+                    MDTextField:
+                        id: department_input
+                        hint_text: "Отдел"
+                        mode: "rectangle"
+
+                    MDRaisedButton:
+                        text: "Сохранить профиль"
+                        on_release: root.save_profile()
+
+                    MDRectangleFlatButton:
+                        text: "Выйти из аккаунта"
+                        on_release: app.logout()
 '''
 Builder.load_string(KV)
 
@@ -43,10 +92,11 @@ class ProfileScreen(BaseScreen):
         user = self.app.state.user
         if not user:
             return
-        self.ids.name.text = f"Name: {user.name}"
+        role_ru = "Менеджер" if user.role == "manager" else "Сотрудник"
+        self.ids.name.text = f"Имя: {user.name}"
         self.ids.name_input.text = user.name
         self.ids.email.text = f"Email: {user.email}"
-        self.ids.role.text = f"Role: {user.role}"
+        self.ids.role.text = f"Роль: {role_ru}"
         self.ids.department_input.text = user.department or ""
 
     def save_profile(self):

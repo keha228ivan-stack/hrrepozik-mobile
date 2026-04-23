@@ -1,4 +1,5 @@
 from kivy.lang import Builder
+from kivy.properties import StringProperty
 from kivymd.toast import toast
 
 from app.screens.base import BaseScreen
@@ -6,43 +7,137 @@ from app.services.api_client import APIError
 
 KV = '''
 #:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <RegisterScreen>:
     name: "register"
     MDBoxLayout:
         orientation: "vertical"
-        padding: dp(20)
-        spacing: dp(12)
-        MDLabel:
-            text: "Create account"
-            halign: "center"
-            font_style: "H5"
-        MDTextField:
-            id: name
-            hint_text: "Full name"
-        MDTextField:
-            id: email
-            hint_text: "Email"
-        MDTextField:
-            id: password
-            hint_text: "Password"
-            password: True
-        MDRaisedButton:
-            text: "Register"
-            on_release: root.on_register()
+        md_bg_color: get_color_from_hex("#F4F7FB")
+
+        MDTopAppBar:
+            title: "Регистрация"
+            left_action_items: [["arrow-left", lambda x: app.go("login")]]
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "center"
+
+            MDCard:
+                orientation: "vertical"
+                size_hint: None, None
+                size: dp(420), dp(620)
+                padding: dp(24)
+                spacing: dp(12)
+                radius: [18, 18, 18, 18]
+                elevation: 0
+                md_bg_color: [1, 1, 1, 1]
+
+                MDLabel:
+                    text: "Создать аккаунт"
+                    font_style: "H5"
+                    bold: True
+                    halign: "center"
+
+                MDLabel:
+                    text: "Заполни данные для входа в систему"
+                    halign: "center"
+                    theme_text_color: "Secondary"
+
+                MDTextField:
+                    id: name
+                    hint_text: "ФИО"
+                    mode: "rectangle"
+
+                MDTextField:
+                    id: email
+                    hint_text: "Email"
+                    mode: "rectangle"
+
+                MDTextField:
+                    id: password
+                    hint_text: "Пароль"
+                    mode: "rectangle"
+                    password: True
+
+                MDTextField:
+                    id: password_confirm
+                    hint_text: "Подтверждение пароля"
+                    mode: "rectangle"
+                    password: True
+
+                MDLabel:
+                    text: "Выбери тип аккаунта"
+                    theme_text_color: "Secondary"
+
+                MDBoxLayout:
+                    size_hint_y: None
+                    height: dp(44)
+                    spacing: dp(8)
+
+                    MDRaisedButton:
+                        text: "👤 Сотрудник"
+                        md_bg_color: get_color_from_hex("#2563EB") if root.selected_role == "employee" else get_color_from_hex("#94A3B8")
+                        on_release: root.select_role("employee")
+
+                    MDRaisedButton:
+                        text: "💼 Менеджер"
+                        md_bg_color: get_color_from_hex("#2563EB") if root.selected_role == "manager" else get_color_from_hex("#94A3B8")
+                        on_release: root.select_role("manager")
+
+                MDLabel:
+                    id: role_hint
+                    text: "Будет открыто меню сотрудника"
+                    theme_text_color: "Secondary"
+
+                MDRaisedButton:
+                    text: "Зарегистрироваться"
+                    on_release: root.on_register()
+
+                MDTextButton:
+                    text: "Уже есть аккаунт? Войти"
+                    pos_hint: {"center_x": .5}
+                    on_release: app.go("login")
 '''
 Builder.load_string(KV)
 
 
 class RegisterScreen(BaseScreen):
     _submitting = False
+    selected_role = StringProperty("employee")
+
+    def select_role(self, role: str) -> None:
+        self.selected_role = role
+        if role == "manager":
+            self.ids.role_hint.text = "Будет открыто меню менеджера с управлением командой"
+        else:
+            self.ids.role_hint.text = "Будет открыто меню сотрудника"
 
     def on_register(self) -> None:
         if self._submitting:
             return
+        name = self.ids.name.text.strip()
+        email = self.ids.email.text.strip()
+        password = self.ids.password.text
+        password_confirm = self.ids.password_confirm.text
+
+        if not name or not email or not password:
+            toast("Заполни все обязательные поля")
+            return
+        if password != password_confirm:
+            toast("Пароли не совпадают")
+            return
+
         self._submitting = True
         try:
-            self.app.handle_register(self.ids.name.text.strip(), self.ids.email.text.strip(), self.ids.password.text)
+            self.app.handle_register(name, email, password, self.selected_role)
+            self.ids.name.text = ""
+            self.ids.email.text = ""
+            self.ids.password.text = ""
+            self.ids.password_confirm.text = ""
+            self.selected_role = "employee"
+            self.ids.role_hint.text = "Будет открыто меню сотрудника"
+            toast("Регистрация успешна")
         except APIError as exc:
-            toast(f"Registration failed: {exc}")
+            toast(f"Ошибка регистрации: {exc}")
         finally:
             self._submitting = False
