@@ -13,7 +13,7 @@ KV = '''
         MDTopAppBar:
             title: "Уведомления"
             left_action_items: [["arrow-left", lambda x: app.route_by_role()]]
-            right_action_items: [["home-outline", lambda x: app.route_by_role()], ["logout", lambda x: app.logout()]]
+            right_action_items: [["home-outline", lambda x: app.route_by_role()]]
         ScrollView:
             MDCard:
                 orientation: "vertical"

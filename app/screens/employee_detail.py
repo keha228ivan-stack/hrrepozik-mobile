@@ -14,7 +14,7 @@ KV = '''
         MDTopAppBar:
             title: "Детали сотрудника"
             left_action_items: [["arrow-left", lambda x: app.go("employees")]]
-            right_action_items: [["home-outline", lambda x: app.go("manager_dashboard")], ["logout", lambda x: app.logout()]]
+            right_action_items: [["home-outline", lambda x: app.go("manager_dashboard")]]
         MDLabel:
             id: title
             text: "Employee"
