@@ -63,7 +63,7 @@ KV = '''
                     icon_color: get_color_from_hex("#2563EB")
 
                 MDRectangleFlatIconButton:
-                    text: "Курсы"
+                    text: "Библиотека курсов"
                     icon: "book-open-page-variant-outline"
                     line_color: [0, 0, 0, 0]
                     text_color: get_color_from_hex("#64748B")
@@ -71,28 +71,36 @@ KV = '''
                     on_release: app.go("course_list")
 
                 MDRectangleFlatIconButton:
-                    text: "Результаты"
-                    icon: "chart-line"
+                    text: "Курсы в процессе"
+                    icon: "progress-clock"
+                    line_color: [0, 0, 0, 0]
+                    text_color: get_color_from_hex("#64748B")
+                    icon_color: get_color_from_hex("#64748B")
+                    on_release: app.go("course_list")
+
+                MDRectangleFlatIconButton:
+                    text: "Завершенные курсы"
+                    icon: "check-circle-outline"
                     line_color: [0, 0, 0, 0]
                     text_color: get_color_from_hex("#64748B")
                     icon_color: get_color_from_hex("#64748B")
                     on_release: app.go("progress_results")
 
                 MDRectangleFlatIconButton:
-                    text: "Микрозадачи"
-                    icon: "check-decagram-outline"
+                    text: "Уведомления"
+                    icon: "bell-outline"
                     line_color: [0, 0, 0, 0]
                     text_color: get_color_from_hex("#64748B")
                     icon_color: get_color_from_hex("#64748B")
-                    on_release: app.go("microtasks")
+                    on_release: app.go("notifications")
 
                 MDRectangleFlatIconButton:
-                    text: "Достижения"
-                    icon: "trophy-outline"
+                    text: "Личный кабинет"
+                    icon: "account-outline"
                     line_color: [0, 0, 0, 0]
                     text_color: get_color_from_hex("#64748B")
                     icon_color: get_color_from_hex("#64748B")
-                    on_release: app.go("achievements")
+                    on_release: app.go("profile")
 
                 Widget:
 
@@ -171,27 +179,6 @@ KV = '''
 
                     MDCard:
                         orientation: "vertical"
-                        padding: dp(20)
-                        spacing: dp(10)
-                        radius: [16, 16, 16, 16]
-                        elevation: 0
-                        md_bg_color: [1, 1, 1, 1]
-                        size_hint_y: None
-                        adaptive_height: True
-
-                        MDLabel:
-                            text: "Сводка"
-                            font_style: "H6"
-                            bold: True
-
-                        MDLabel:
-                            id: summary
-                            text: "Loading..."
-                            theme_text_color: "Secondary"
-                            adaptive_height: True
-
-                    MDCard:
-                        orientation: "vertical"
                         padding: dp(16)
                         radius: [16, 16, 16, 16]
                         elevation: 0
@@ -216,19 +203,13 @@ class EmployeeDashboardScreen(BaseScreen):
         self.app.load_notifications()
         container = self.ids.course_list
         container.clear_widgets()
-        active = completed = overdue = 0
+        active = completed = 0
         for course in self.app.state.courses:
             if course.status == "active":
                 active += 1
             elif course.status == "completed":
                 completed += 1
-            elif course.status == "overdue":
-                overdue += 1
             container.add_widget(self.app.widgets.course_item(course, "course_detail"))
         self.ids.courses_total.text = str(len(self.app.state.courses))
         self.ids.courses_active.text = str(active)
         self.ids.courses_completed.text = str(completed)
-        self.ids.summary.text = (
-            f"Courses: {len(self.app.state.courses)} | Active: {active} | Completed: {completed} | "
-            f"Overdue: {overdue} | Notifications: {len(self.app.state.notifications)}"
-        )
