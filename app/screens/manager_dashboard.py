@@ -98,6 +98,7 @@ KV = '''
                     line_color: [0, 0, 0, 0]
                     text_color: get_color_from_hex("#64748B")
                     icon_color: get_color_from_hex("#64748B")
+                    on_release: app.go("course_list")
 
                 MDRectangleFlatIconButton:
                     text: "Отчёты"
@@ -115,8 +116,8 @@ KV = '''
                 MDBoxLayout:
                     orientation: "vertical"
                     adaptive_height: True
-                    padding: dp(28), dp(24), dp(28), dp(28)
-                    spacing: dp(16)
+                    padding: dp(20), dp(16), dp(20), dp(20)
+                    spacing: dp(12)
 
                     MDLabel:
                         text: "Создание курса"
@@ -140,13 +141,12 @@ KV = '''
 
                     MDCard:
                         orientation: "vertical"
-                        padding: dp(20)
-                        spacing: dp(16)
+                        padding: dp(16)
+                        spacing: dp(10)
                         radius: [18, 18, 18, 18]
                         elevation: 0
                         md_bg_color: [1, 1, 1, 1]
-                        size_hint_y: None
-                        height: dp(560)
+                        adaptive_height: True
 
                         MDLabel:
                             text: "Основная информация"
