@@ -161,7 +161,7 @@ KV = '''
                             MDTextField:
                                 hint_text: "Название курса"
                                 helper_text: "Введите название курса"
-                                helper_text_mode: "persistent"
+                                helper_text_mode: "on_focus"
                                 mode: "rectangle"
 
                             MDTextField:
@@ -172,7 +172,7 @@ KV = '''
                             MDTextField:
                                 hint_text: "Длительность"
                                 helper_text: "Например: 4 недели"
-                                helper_text_mode: "persistent"
+                                helper_text_mode: "on_focus"
                                 mode: "rectangle"
 
                             MDTextField:
@@ -188,7 +188,7 @@ KV = '''
                         MDTextField:
                             hint_text: "Описание курса"
                             helper_text: "Опишите содержание и цели курса"
-                            helper_text_mode: "persistent"
+                            helper_text_mode: "on_focus"
                             mode: "rectangle"
                             multiline: True
                             max_height: dp(180)
