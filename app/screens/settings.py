@@ -4,11 +4,17 @@ from app.screens.base import BaseScreen
 
 KV = '''
 #:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <SettingsScreen>:
     name: "settings"
     MDBoxLayout:
         orientation: "vertical"
+        md_bg_color: get_color_from_hex("#F4F7FB")
         padding: dp(12)
+        MDTopAppBar:
+            title: "Настройки"
+            left_action_items: [["arrow-left", lambda x: app.route_by_role()]]
+            right_action_items: [["home-outline", lambda x: app.route_by_role()]]
         MDLabel:
             text: "Settings / Offline"
         MDLabel:

@@ -3,23 +3,43 @@ from kivy.lang import Builder
 from app.screens.base import BaseScreen
 
 KV = '''
+#:import dp kivy.metrics.dp
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 <CourseListScreen>:
     name: "course_list"
     MDBoxLayout:
         orientation: "vertical"
+        md_bg_color: get_color_from_hex("#F4F7FB")
         MDTopAppBar:
-            title: "Courses"
-        MDTextField:
-            id: query
-            hint_text: "Search"
-            on_text_validate: root.apply_filter()
-        MDTextField:
-            id: status
-            hint_text: "Status filter (active/completed/overdue)"
-            on_text_validate: root.apply_filter()
-        ScrollView:
-            MDList:
-                id: list
+            title: "Обучение"
+            left_action_items: [["arrow-left", lambda x: app.route_by_role()]]
+            right_action_items: [["home-outline", lambda x: app.route_by_role()]]
+
+        MDCard:
+            orientation: "vertical"
+            radius: [16, 16, 16, 16]
+            elevation: 0
+            md_bg_color: [1, 1, 1, 1]
+            padding: dp(16)
+            spacing: dp(10)
+            size_hint: 1, 1
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDTextField:
+                id: query
+                hint_text: "Поиск курса"
+                mode: "rectangle"
+                on_text_validate: root.apply_filter()
+
+            MDTextField:
+                id: status
+                hint_text: "Фильтр: active/completed/overdue"
+                mode: "rectangle"
+                on_text_validate: root.apply_filter()
+
+            ScrollView:
+                MDList:
+                    id: list
 '''
 Builder.load_string(KV)
 

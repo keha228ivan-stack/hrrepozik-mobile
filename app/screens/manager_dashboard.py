@@ -40,17 +40,9 @@ KV = '''
                 on_release: app.go("notifications")
 
             MDIconButton:
-                icon: "cog-outline"
+                icon: "account-outline"
                 theme_icon_color: "Custom"
                 icon_color: get_color_from_hex("#64748B")
-                on_release: app.go("settings")
-
-            MDRectangleFlatButton:
-                text: "Менеджер"
-                size_hint: None, None
-                size: dp(160), dp(52)
-                line_color: get_color_from_hex("#CBD5E1")
-                text_color: get_color_from_hex("#0F172A")
                 on_release: app.go("profile")
 
         MDBoxLayout:
@@ -106,6 +98,7 @@ KV = '''
                     line_color: [0, 0, 0, 0]
                     text_color: get_color_from_hex("#64748B")
                     icon_color: get_color_from_hex("#64748B")
+                    on_release: app.go("course_list")
 
                 MDRectangleFlatIconButton:
                     text: "Отчёты"
@@ -123,8 +116,8 @@ KV = '''
                 MDBoxLayout:
                     orientation: "vertical"
                     adaptive_height: True
-                    padding: dp(28), dp(24), dp(28), dp(28)
-                    spacing: dp(16)
+                    padding: dp(20), dp(16), dp(20), dp(20)
+                    spacing: dp(12)
 
                     MDLabel:
                         text: "Создание курса"
@@ -148,13 +141,12 @@ KV = '''
 
                     MDCard:
                         orientation: "vertical"
-                        padding: dp(20)
-                        spacing: dp(16)
+                        padding: dp(16)
+                        spacing: dp(10)
                         radius: [18, 18, 18, 18]
                         elevation: 0
                         md_bg_color: [1, 1, 1, 1]
-                        size_hint_y: None
-                        height: dp(560)
+                        adaptive_height: True
 
                         MDLabel:
                             text: "Основная информация"
@@ -169,7 +161,7 @@ KV = '''
                             MDTextField:
                                 hint_text: "Название курса"
                                 helper_text: "Введите название курса"
-                                helper_text_mode: "persistent"
+                                helper_text_mode: "on_focus"
                                 mode: "rectangle"
 
                             MDTextField:
@@ -180,7 +172,7 @@ KV = '''
                             MDTextField:
                                 hint_text: "Длительность"
                                 helper_text: "Например: 4 недели"
-                                helper_text_mode: "persistent"
+                                helper_text_mode: "on_focus"
                                 mode: "rectangle"
 
                             MDTextField:
@@ -196,7 +188,7 @@ KV = '''
                         MDTextField:
                             hint_text: "Описание курса"
                             helper_text: "Опишите содержание и цели курса"
-                            helper_text_mode: "persistent"
+                            helper_text_mode: "on_focus"
                             mode: "rectangle"
                             multiline: True
                             max_height: dp(180)
